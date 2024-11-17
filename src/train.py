@@ -1,8 +1,9 @@
 import joblib
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
 
 
 SELECTED_COLUMNS = ['jawOpen',
@@ -46,17 +47,26 @@ if __name__ == '__main__':
 
     # Evaluate the model on the validation set
     y_valid_pred = clf.predict(X_valid)
+    y_valid_pred = clf.predict(X_valid)
     print("Validation set results:")
-    print(classification_report(y_valid, y_valid_pred))
+    cm_valid = confusion_matrix(y_valid, y_valid_pred, labels=clf.classes_)
+    disp_valid = ConfusionMatrixDisplay(confusion_matrix=cm_valid, display_labels=clf.classes_)
+    disp_valid.plot(cmap=plt.cm.Blues)
+    plt.title("Validation Set Confusion Matrix")
+    plt.show()
 
     # Evaluate the model on the test set
     y_test_pred = clf.predict(X_test)
     print("Test set results:")
-    print(classification_report(y_test, y_test_pred))
+    cm_test = confusion_matrix(y_test, y_test_pred, labels=clf.classes_)
+    disp_test = ConfusionMatrixDisplay(confusion_matrix=cm_test, display_labels=clf.classes_)
+    disp_test.plot(cmap=plt.cm.Blues)
+    plt.title("Test Set Confusion Matrix")
+    plt.show()
 
     # Calculate accuracy on the test set
     test_accuracy = accuracy_score(y_test, y_test_pred)
     print(f"Test set accuracy: {test_accuracy:.2f}")
 
     # save
-    joblib.dump(clf, "random_forest_model.pkl")
+    # joblib.dump(clf, "random_forest_model.pkl")

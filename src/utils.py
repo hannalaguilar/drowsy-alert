@@ -125,11 +125,12 @@ def plot_face_blendshapes_bar_graph(face_blendshapes):
     plt.show()
 
 
-def tsne_plot(X, y, perplexity: int=30):
+def tsne_plot(X, y, title:str=None, perplexity: int=30):
     t_sne = TSNE(n_components=2, learning_rate='auto',
                      init='random', perplexity=perplexity, random_state=0)
     X_embedded = t_sne.fit_transform(X)
     fig, ax = plt.subplots(1, 1)
+    plt.title(title)
     sns.scatterplot(x=X_embedded[:, 0],
                     y=X_embedded[:, 1],
                     hue=y,

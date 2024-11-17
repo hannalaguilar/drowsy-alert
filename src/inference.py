@@ -20,7 +20,7 @@ options = vision.FaceLandmarkerOptions(base_options=base_options,
 
 
 video_path = '19-FemaleNoGlasses-Talking&Yawning.avi'  # Ruta al archivo de video
-cap = cv2.VideoCapture(video_path)
+cap = cv2.VideoCapture(0)
 
 from mediapipe import solutions
 solutions.drawing_utils
@@ -47,16 +47,16 @@ with vision.FaceLandmarker.create_from_options(options) as landmarker:
 
             print(f"Predicted class: {y_pred[0]}")
 
+            if y_pred=='normal':
+                font_color=(0, 255, 0)
+            elif y_pred=='yawning':
+                font_color=(0, 0, 255)
+
+            cv2.putText(frame, y_pred[0], (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, font_color, 2, cv2.LINE_AA)
+            cv2.rectangle(frame, (x_min_px, y_min_px), (x_max_px, y_max_px), font_color, 2)
 
         if not success:
             break
-        if y_pred=='normal':
-            font_color=(0, 255, 0)
-        elif y_pred=='yawning':
-            font_color=(0, 0, 255)
-
-        cv2.putText(frame, y_pred[0], (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, font_color, 2, cv2.LINE_AA)
-        cv2.rectangle(frame, (x_min_px, y_min_px), (x_max_px, y_max_px), font_color, 2)
 
         cv2.imshow('frame', frame)
         if cv2.waitKey(100) == ord('q'):

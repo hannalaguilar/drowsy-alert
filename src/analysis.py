@@ -20,7 +20,7 @@ combined_csv = pd.concat(
 X = combined_csv.iloc[:, 1:-1]
 y = combined_csv['label']
 
-tsne_plot(X, y)
+tsne_plot(X, y, 'All features - TSNE')
 
 # Feature importance
 model = RandomForestClassifier(random_state=0)
@@ -33,3 +33,20 @@ sorted_importances = importances[indices]
 
 plot_feature_importance(sorted_features, sorted_importances, n=10)
 
+
+
+
+SELECTED_COLUMNS = ['jawOpen',
+ 'cheekPuff',
+ 'mouthLowerDownLeft',
+ 'jawRight',
+ 'mouthLowerDownRight',
+ 'mouthShrugLower',
+ 'mouthFunnel',
+ 'jawForward',
+ 'mouthClose',
+ 'mouthStretchLeft']
+
+X_1 = X[SELECTED_COLUMNS]
+
+tsne_plot(X_1, y, '10 most important features - TSNE')
