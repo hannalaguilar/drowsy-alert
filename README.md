@@ -30,7 +30,7 @@ wget -O face_landmarker_v2_with_blendshapes.task -q https://storage.googleapis.c
 ### 1. Real-Time via Webcam
 
 ```bash
-python inference_webcam.py
+python inference_webcam.py --video_name 0
 ```
 
 ### 2. Pre-Recorded Video
