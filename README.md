@@ -3,7 +3,6 @@
 A lightweight drowsiness detection system using Mediapipe's **Face Landmark Detection Model** and a **RandomForestClassifier** to classify states like `normal` or `yawning` based on facial blendshapes. It supports real-time webcam inference and video processing.
 
 <img src="images/example.png" alt="Logo" width="50%">
----
 
 ## **Quick Setup**
 
