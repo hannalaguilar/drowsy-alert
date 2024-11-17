@@ -8,7 +8,7 @@ from src.utils import tsne_plot, plot_feature_importance
 files_and_labels = [
     ("Normal.csv", "normal"),
     # ("Talking.csv", "talking"),
-    ("Yawning_cleaned2.csv", "yawning"),
+    ("Yawning_cleaned.csv", "yawning"),
 ]
 
 combined_csv = pd.concat(
