@@ -7,6 +7,8 @@ from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.manifold import TSNE
 
 pathType = Union[str, Path]
 
@@ -121,3 +123,39 @@ def plot_face_blendshapes_bar_graph(face_blendshapes):
     ax.set_title("Face Blendshapes")
     plt.tight_layout()
     plt.show()
+
+
+def tsne_plot(X, y, perplexity: int=30):
+    t_sne = TSNE(n_components=2, learning_rate='auto',
+                     init='random', perplexity=perplexity, random_state=0)
+    X_embedded = t_sne.fit_transform(X)
+    fig, ax = plt.subplots(1, 1)
+    sns.scatterplot(x=X_embedded[:, 0],
+                    y=X_embedded[:, 1],
+                    hue=y,
+                    palette='tab10', ax=ax)
+    ax.set_xlabel('tsne 1')
+    ax.set_ylabel('tsne 2')
+    plt.show()
+
+
+def plot_feature_importance(sorted_features, sorted_importances, n: int=10):
+    plt.figure(figsize=(10, 6))
+    plt.barh(sorted_features[:10][::-1], sorted_importances[:10][::-1], align='center')
+    plt.xlabel('Feature Importance')
+    plt.title(f'Top {n} Feature Importances')
+    plt.show()
+
+
+def get_rect_points(landmarks, height, width):
+    x_coords = [landmark.x for landmark in landmarks]
+    y_coords = [landmark.y for landmark in landmarks]
+    x_min = min(x_coords)
+    x_max = max(x_coords)
+    y_min = min(y_coords)
+    y_max = max(y_coords)
+    x_min_px = int(x_min * width)
+    x_max_px = int(x_max * width)
+    y_min_px = int(y_min * height)
+    y_max_px = int(y_max * height)
+    return x_min_px, x_max_px, y_min_px, y_max_px
