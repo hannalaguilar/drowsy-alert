@@ -24,7 +24,7 @@ def main(folder_path) -> pd.DataFrame:
     # dd = load_model()
 
     base_options = python.BaseOptions(
-        model_asset_path='/home/hanna/MAI/2024-I/ISP/project/drowsy-alert/src/face_landmarker_v2_with_blendshapes.task')
+        model_asset_path='/face_landmarker_v2_with_blendshapes.task')
     options = vision.FaceLandmarkerOptions(base_options=base_options,
                                            output_face_blendshapes=True,
                                            output_facial_transformation_matrixes=True,

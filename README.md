@@ -19,6 +19,14 @@ Create an enviroment:
 
 The trained model is stored in the following path: `models/random_forest_model_1.pkl`
 
+Before running the code, download the Mediapipe face landmark model and place it in the root directory:
+
+```bash
+wget -O face_landmarker_v2_with_blendshapes.task -q https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task
+````
+
+
+
 ### 1. Real-Time via Webcam
 
 ```bash

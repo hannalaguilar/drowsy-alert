@@ -1,4 +1,5 @@
 import joblib
+import argparse
 from pathlib import Path
 import cv2
 import mediapipe as mp
@@ -8,24 +9,34 @@ from mediapipe.tasks.python import vision
 from src.train import SELECTED_COLUMNS
 from src.utils import get_rect_points
 
-path_file = Path(__file__)
-ROOT_PATH = str(path_file.parent)
 
 
-def load_clf_model():
-    return joblib.load(ROOT_PATH + "/models/random_forest_model_1.pkl")
+def parse_args():
+    parser = argparse.ArgumentParser(description="Drowsy-alert model")
+    parser.add_argument("--video_name",type=int,default=0,required=False)
+    parser.add_argument("--root_path", type=str, default=str(Path(__file__).parent), required=False)
+    args = parser.parse_args()
+    return args
 
 
-def main(video_path: str=0):
+def load_clf_model(root_path: str):
+    return joblib.load(root_path + "/models/random_forest_model_1.pkl")
+
+
+def main():
+    args = parse_args()
+    video_name = args.video_name
+    root_path = args.root_path
+
     # load clf_model
-    clf = load_clf_model()
+    clf = load_clf_model(root_path)
 
     # load video
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_name)
 
     # load mediapipe face landmark model
     base_options = python.BaseOptions(
-        model_asset_path=ROOT_PATH + '/src/face_landmarker_v2_with_blendshapes.task')
+        model_asset_path=root_path + '/face_landmarker_v2_with_blendshapes.task')
     options = vision.FaceLandmarkerOptions(base_options=base_options,
                                            output_face_blendshapes=True,
                                            output_facial_transformation_matrixes=True,
