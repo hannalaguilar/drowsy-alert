@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="drowsy-alert" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="mmpose-env" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="drowsy" project-jdk-type="Python SDK" />
 </project>
