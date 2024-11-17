@@ -6,9 +6,9 @@ from src.utils import tsne_plot, plot_feature_importance
 
 
 files_and_labels = [
-    ("Normal.csv", "normal"),
+    ("../data/csv/Normal.csv", "normal"),
     # ("Talking.csv", "talking"),
-    ("Yawning_cleaned.csv", "yawning"),
+    ("../data/csv/Yawning_cleaned.csv", "yawning"),
 ]
 
 combined_csv = pd.concat(
