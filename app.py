@@ -25,7 +25,7 @@ face_mesh = mp_face_mesh.FaceMesh(
 # Streamlit Layout
 st.set_page_config(layout="wide")
 
-st.title("Drowsy Alert System")
+st.title("Drowsy Alert System 🚗😴⚠️")
 
 # Create columns for the layout
 col1, col2, col3 = st.columns([4, 2, 2])  # Left column (for webcam) is wider
