@@ -4,12 +4,12 @@ import mediapipe as mp
 import pandas as pd
 from collections import deque
 import time
-from drowsy_metrics import calculate_ear, calculate_mouth_openness, calculate_fainted_chin
+from drowsy_metrics import calculate_ear, calculate_mouth_openness, calculate_drop
 
 # Thresholds
 EYE_AR_THRESH = 0.2
 MOUTH_AR_THRESH = 0.35
-CHIN_THRESH = 0.12
+DROP_THRESH = 0.12
 SCORE_THRESH = 5
 
 # Initialize MediaPipe Face Mesh
@@ -58,8 +58,8 @@ with col2:
 with col3:
     st.subheader(" ")
     st.markdown(" ")
-    st.markdown("2. **Fainted Chin**")
-    fainted_chin_placeholder = st.empty()
+    st.markdown("2. **Drop Ratio**")
+    drop_placeholder = st.empty()
     st.markdown("4. **Left Eye Aspect Ratio (EAR)**")
     left_eye_placeholder = st.empty()
 
@@ -69,7 +69,7 @@ time_data = deque(maxlen=50)
 mouth_data = deque(maxlen=50)
 left_eye_data = deque(maxlen=50)
 right_eye_data = deque(maxlen=50)
-fainted_chin_data = deque(maxlen=50)
+drop_ratio_data = deque(maxlen=50)
 
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
@@ -136,25 +136,25 @@ while run:
                 left_ear = calculate_ear(left_eye_landmarks, frame.shape)
                 right_ear = calculate_ear(right_eye_landmarks, frame.shape)
                 ear_mean = (left_ear + right_ear) / 2.0
-                fainted_chin = calculate_fainted_chin(landmarks.landmark, frame.shape)
+                drop_ratio = calculate_drop(landmarks.landmark, frame.shape)
 
                 # Threshold
                 ear_flag = ear_mean < EYE_AR_THRESH
                 mouth_flag = mouth_openness > MOUTH_AR_THRESH
-                fain_flag = fainted_chin < CHIN_THRESH
+                drop_flag = drop_ratio < DROP_THRESH
 
                 # Debugging
-                print(f"EAR: {ear_mean}, Mouth: {mouth_openness}, Chin: {fainted_chin}")
-                print(f"Flags - EAR: {ear_flag}, Mouth: {mouth_flag}, Chin: {fain_flag}")
+                print(f"EAR: {ear_mean}, Mouth: {mouth_openness}, Drop: {drop_ratio}")
+                print(f"Flags - EAR: {ear_flag}, Mouth: {mouth_flag}, Drop: {drop_flag}")
 
                 if ear_mean < EYE_AR_THRESH:
                     ear_flag = True
                 if mouth_openness > MOUTH_AR_THRESH:
                     mouth_flag = True
-                if fainted_chin < CHIN_THRESH:
-                    fain_flag = True
+                if drop_ratio < DROP_THRESH:
+                    drop_flag = True
 
-                if ear_flag or mouth_flag or fain_flag:
+                if ear_flag or mouth_flag or drop_flag:
                     score += 1  # Increment if any flag is True
                 else:
                     score -= 1 # Decrement if all flags are False
@@ -179,7 +179,7 @@ while run:
                 mouth_data.append(mouth_openness)
                 left_eye_data.append(left_ear)
                 right_eye_data.append(right_ear)
-                fainted_chin_data.append(fainted_chin)
+                drop_ratio_data.append(drop_ratio)
 
                 # Draw a bounding box
                 x_min = int(min([lm.x for lm in landmarks.landmark]) * frame.shape[1])
@@ -203,12 +203,12 @@ while run:
         mouth_chart = pd.DataFrame({"Time": list(time_data), "Mouth Openness": list(mouth_data)})
         left_eye_chart = pd.DataFrame({"Time": list(time_data), "Left EAR": list(left_eye_data)})
         right_eye_chart = pd.DataFrame({"Time": list(time_data), "Right EAR": list(right_eye_data)})
-        fainted_chin_chart = pd.DataFrame({"Time": list(time_data), "Fainted Chin": list(fainted_chin_data)})
+        drop_chart = pd.DataFrame({"Time": list(time_data), "Drop Ratio": list(drop_ratio_data)})
 
         mouth_placeholder.line_chart(mouth_chart["Mouth Openness"], x_label= "Time", y_label="Mouth Openness", width= 300, height=300, use_container_width=False)
         left_eye_placeholder.line_chart(left_eye_chart["Left EAR"], x_label= "Time", y_label="Left Eye EAR",  width= 300 ,height=300,use_container_width=False)
         right_eye_placeholder.line_chart(right_eye_chart["Right EAR"], x_label= "Time", y_label="Right Eye EAR", width= 300 ,height=300,use_container_width=False)
-        fainted_chin_placeholder.line_chart(fainted_chin_chart["Fainted Chin"], x_label="Time", y_label="Fainted Chin Ratio", width=300,
+        drop_placeholder.line_chart(drop_chart["Drop Ratio"], x_label="Time", y_label="Drop Ratio Ratio", width=300,
                                          height=300, use_container_width=False)
 
         with col1:

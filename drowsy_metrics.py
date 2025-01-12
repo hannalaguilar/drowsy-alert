@@ -24,7 +24,7 @@ def calculate_mouth_openness(landmarks, frame_shape):
     return vertical / horizontal
 
 
-def calculate_fainted_chin(landmarks, frame_shape):
+def calculate_drop(landmarks, frame_shape):
     chin = landmarks[152]
     nose = landmarks[1]
     height, width, _ = frame_shape
