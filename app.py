@@ -38,6 +38,7 @@ with col1:
     This application detects drowsiness using face landmarks and provides live graphs of relevant metrics such as:
     - **Mouth Openness Ratio** (indicating yawning or drowsiness)
     - **Eye Aspect Ratio (EAR)** (indicating eye closure levels)
+    - **Drop Ratio** (indicating chin drop)
     """
     )
     # Start Webcam and Detection
@@ -58,7 +59,7 @@ with col2:
 with col3:
     st.subheader(" ")
     st.markdown(" ")
-    st.markdown("2. **Fainted Chin**")
+    st.markdown("2. **Drop Ratio**")
     fainted_chin_placeholder = st.empty()
     st.markdown("4. **Left Eye Aspect Ratio (EAR)**")
     left_eye_placeholder = st.empty()
@@ -161,7 +162,7 @@ while run:
                     if score < 0:
                         score = 0
 
-                score_text = f'Score: {score}'
+                score_text = f'##Score: {score}'
                 text_x = 10
                 text_y = frame.shape[0] - 10
                 text_size = cv2.getTextSize(score_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)[0]
